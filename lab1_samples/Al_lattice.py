@@ -1,4 +1,4 @@
-from src.lammps import *
+from labutil.src.lammps import *
 from ase.spacegroup import crystal
 from ase.build import *
 import numpy
@@ -17,8 +17,8 @@ read_data $DATAINPUT
 #pair_style eam/alloy
 #pair_coeff * * $POTENTIAL  Al
 
-pair_style lj/cut 2.5
-pair_coeff 1 1 0.392 2.620 2.5
+pair_style lj/cut 4.5
+pair_coeff 1 1 0.392 2.620 4.5
 
 # ---------- 3. Run the calculation ----------------
 # -- perform a single-point energy calculation only
@@ -60,7 +60,7 @@ def compute_energy(alat, template):
     Make an input template and select potential and structure, and the path where to run
     """
     potential = ClassicalPotential({'path': os.path.join(os.environ['LAMMPS_POTENTIALS'],'Al_zhou.eam.alloy')})
-    runpath = Dir({'path': os.path.join(os.environ['WORKDIR'], "Lab1", str(alat))})
+    runpath = Dir({'path': os.path.join(os.environ['WORKDIR'], "Problem1", str(alat))})
     struc = make_struc(alat=alat)
     output_file = lammps_run(struc=struc, runpath=runpath, potential=potential, in_template=template)
     energy, lattice = get_lammps_energy(outfile=output_file)

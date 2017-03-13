@@ -1,0 +1,41 @@
+data_image0
+_cell_length_a       8.46
+_cell_length_b       16.92
+_cell_length_c       24.23
+_cell_angle_alpha    90
+_cell_angle_beta     90
+_cell_angle_gamma    90
+
+loop_
+  _atom_site_label
+  _atom_site_occupancy
+  _atom_site_fract_x
+  _atom_site_fract_y
+  _atom_site_fract_z
+  _atom_site_thermal_displace_type
+  _atom_site_B_iso_or_equiv
+  _atom_site_type_symbol
+  Na1      1.0000 0.00000  0.00000  0.41271  Biso   1.000  Na
+  Na2      1.0000 0.50000  0.00000  0.41271  Biso   1.000  Na
+  Na3      1.0000 0.00000  0.25000  0.41271  Biso   1.000  Na
+  Na4      1.0000 0.50000  0.25000  0.41271  Biso   1.000  Na
+  Na5      1.0000 0.00000  0.50000  0.41271  Biso   1.000  Na
+  Na6      1.0000 0.50000  0.50000  0.41271  Biso   1.000  Na
+  Na7      1.0000 0.00000  0.75000  0.41271  Biso   1.000  Na
+  Na8      1.0000 0.50000  0.75000  0.41271  Biso   1.000  Na
+  Na9      1.0000 0.25000  0.12500  0.50000  Biso   1.000  Na
+  Na10     1.0000 0.75000  0.12500  0.50000  Biso   1.000  Na
+  Na11     1.0000 0.25000  0.37500  0.50000  Biso   1.000  Na
+  Na12     1.0000 0.75000  0.37500  0.50000  Biso   1.000  Na
+  Na13     1.0000 0.25000  0.62500  0.50000  Biso   1.000  Na
+  Na14     1.0000 0.75000  0.62500  0.50000  Biso   1.000  Na
+  Na15     1.0000 0.25000  0.87500  0.50000  Biso   1.000  Na
+  Na16     1.0000 0.75000  0.87500  0.50000  Biso   1.000  Na
+  Na17     1.0000 0.00000  0.00000  0.58729  Biso   1.000  Na
+  Na18     1.0000 0.50000  0.00000  0.58729  Biso   1.000  Na
+  Na19     1.0000 0.00000  0.25000  0.58729  Biso   1.000  Na
+  Na20     1.0000 0.50000  0.25000  0.58729  Biso   1.000  Na
+  Na21     1.0000 0.00000  0.50000  0.58729  Biso   1.000  Na
+  Na22     1.0000 0.50000  0.50000  0.58729  Biso   1.000  Na
+  Na23     1.0000 0.00000  0.75000  0.58729  Biso   1.000  Na
+  Na24     1.0000 0.50000  0.75000  0.58729  Biso   1.000  Na

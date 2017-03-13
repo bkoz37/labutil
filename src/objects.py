@@ -1,4 +1,5 @@
 import ase, json
+from .util import *
 
 
 class Generic(object):
@@ -6,8 +7,18 @@ class Generic(object):
     The basic class for a data object. it is defined by the attribute content which can be a number,
     string, list or a dict.
     """
-    def __init__(self, content):
-        self.content = content
+    def __init__(self, *args, **kwargs):
+        if args:
+            # in case of a single literal or a dict being supplied
+            assert not kwargs and len(args) == 1, "wrong number of init args"
+            self.content = args[0]
+        if kwargs:
+            # can supply content=dict, or an unpacked dict by keywords, but not both
+            if 'content' in kwargs:
+                assert not args and len(kwargs) == 1, "wrong number of init kwargs"
+                self.content = kwargs['content']
+            else:
+                self.content = kwargs
 
     def __repr__(self):
         return "{} {}".format(self.__class__.__name__, self.content)
@@ -28,6 +39,16 @@ class Dir(Path):
 class File(Path):
     """data class used to store OS files"""
     pass
+
+
+class TextFile(File):
+
+    @property
+    def text(self):
+        return self.content['text']
+
+    def write(self):
+        write_file(fname=self.path, text=self.text)
 
 
 class ExternalCode(File):
@@ -61,35 +82,35 @@ class Struc(Param):
         masses = aseobj.get_masses()
         positions = aseobj.get_positions().tolist()
         # easy way to get rid of tuples after zipping
-        sites = json.loads(json.dumps(list(zip(symbols, positions))))
+        positions = json.loads(json.dumps(list(zip(symbols, positions))))
         types = sorted(list(set(zip(symbols, masses))))
         species = {tp[0]: {'mass': tp[1], 'kind': i + 1} for i, tp in enumerate(types)}
-        content={'cell': cell, 'sites': sites, 'periodicity': pbc, 'species': species}
+        content = {'cell': cell, 'positions': positions, 'periodicity': pbc, 'species': species}
         return content
 
     def to_ase(self):
         cell = self.content['cell']
-        atoms = [ase.Atom(site[0], tuple(site[1])) for site in self.content['sites']]
+        atoms = [ase.Atom(site[0], tuple(site[1])) for site in self.content['positions']]
         aseobj = ase.Atoms(atoms)
         aseobj.set_cell(cell)
-        aseobj.set_pbc(self.content['pbc'])
+        aseobj.set_pbc(self.content['periodicity'])
         return aseobj
 
     @property
     def symbols(self):
-        return [s[0] for s in self.content['sites']]
+        return [s[0] for s in self.content['positions']]
 
     @property
     def cell(self):
         return self.content['cell']
 
     @property
-    def sites(self):
-        return self.content['sites']
+    def positions(self):
+        return self.content['positions']
 
     @property
     def n_atoms(self):
-        return len(self.content['sites'])
+        return len(self.content['positions'])
 
     @property
     def n_species(self):

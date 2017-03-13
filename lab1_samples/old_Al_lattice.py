@@ -14,22 +14,22 @@ boundary   p p p
 read_data $DATAINPUT
 
 # ---------- Specify interatomic potential ---------------------
-#pair_style eam/alloy
-#pair_coeff * * $POTENTIAL  Al
+pair_style eam/alloy
+pair_coeff * * $POTENTIAL  Al
 
-pair_style lj/cut 4.5
-pair_coeff 1 1 0.392 2.620 4.5
+#pair_style lj/cut 4.5
+#pair_coeff 1 1 0.392 2.620 4.5
 
 # ---------- 3. Run the calculation ----------------
 # -- perform a single-point energy calculation only
 run 0
 
 # -- include optimization of the unit cell parameter
-# fix 1 all box/relax iso 0.0 vmax 0.001
+#fix 1 all box/relax iso 0.0 vmax 0.001
 
 # -- enable optimization of atomic positions (and the cell)
-# min_style cg
-# minimize 1e-10 1e-10 1000 10000
+#min_style cg
+#minimize 1e-10 1e-10 1000 10000
 
 # ---- Define and print useful variables -------------
 variable natoms equal "count(all)"

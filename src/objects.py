@@ -125,7 +125,7 @@ class Kpoints(Param):
     """
     Class describing the Brillouin Zone k-mesh for plane-wave DFT calculations.
     Example:
-        kpts = {'option': 'automatic', 'value': [2, 3, 3]}
+        kpts = {'option': 'automatic', 'gridsize': [2, 3, 3]}
     """
     pass
 

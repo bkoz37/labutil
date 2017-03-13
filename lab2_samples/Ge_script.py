@@ -64,7 +64,7 @@ def lattice_scan(me):
     ecut = 30
     alat = 5.0
     output = compute_energy(me, alat=alat, ecut=ecut, nk=nk)
-    energy=output['energy']
+    energy = output['energy']
     print(energy)
 
 

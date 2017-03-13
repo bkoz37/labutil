@@ -1,4 +1,4 @@
-from src.plugins.lammps import *
+from labutil.src.plugins.lammps import *
 from ase.spacegroup import crystal
 from ase.build import *
 import numpy

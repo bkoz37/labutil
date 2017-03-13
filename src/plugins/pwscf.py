@@ -1,6 +1,6 @@
 #from aiida_lite.plugins.atomistic.datatypes import *
 #from aiida_lite.lib.workfunction import *
-from src.objects import *
+from ..objects import *
 #from src.util import *
 
 

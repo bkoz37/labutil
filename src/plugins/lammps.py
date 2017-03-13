@@ -1,6 +1,6 @@
 import os
 from string import Template
-from src.objects import *
+from ..objects import *
 from ase.io.lammpsrun import read_lammps_dump
 
 

@@ -2,7 +2,7 @@
     tstress = .true.
     tprnfor = .true.
     pseudo_dir = '/home/bond/Software/qe-6.0/pseudo'
-    outdir = '/home/bond/3320/Lab2/work/Problem1/5.0'
+    outdir = '/home/bond/3320/Lab2/work/sample'
     calculation = 'scf'
 / 
 &SYSTEM
@@ -25,9 +25,9 @@ K_POINTS automatic
 ATOMIC_SPECIES
   Ge 72.61 Ge.pz-bhs.UPF
 CELL_PARAMETERS {angstrom}
- 3.061616997868383e-16 2.5 2.5
- 2.5 1.5308084989341916e-16 2.5
+ 0.0 2.5 2.5
+ 2.5 0.0 2.5
  2.5 2.5 0.0
 ATOMIC_POSITIONS {crystal}
   Ge 0.00000 0.00000 0.00000
-  Ge 1.25000 1.25000 1.25000
+  Ge 0.25000 0.25000 0.25000

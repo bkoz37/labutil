@@ -70,7 +70,7 @@ def write_pwscf_input(me, runpath, params, struc, kpoints, pseudopots):
         inptxt += ' {} {} {}\n'.format(*vector)
 
     # Write the ATOMIC_POSITIONS in crystal coords
-    inptxt += 'ATOMIC_POSITIONS {crystal}\n'
+    inptxt += 'ATOMIC_POSITIONS {angstrom}\n'
     for site in struc.content['positions']:
         inptxt += '  {} {:1.5f} {:1.5f} {:1.5f}'.format(site[0], *site[1])
         if len(site)>2:

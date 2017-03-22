@@ -28,7 +28,7 @@ def compute_energy(me, alat, nk, ecut):
     potname = 'Fe.pbe-nd-rrkjus.UPF'
     potpath = os.path.join(os.environ['ESPRESSO_PSEUDO'], potname)
     pseudopots = {'Fe': PseudoPotential(path=potpath, ptype='uspp', element='Fe',
-                                        functional='LDA', name=potname)}
+                                        functional='GGA', name=potname)}
     struc = make_struc(me, alat=alat)
     kpts = Kpoints(gridsize=[nk, nk, nk], option='automatic', offset=False)
     dirname = 'Fe_a_{}_ecut_{}_nk_{}'.format(alat, ecut, nk)

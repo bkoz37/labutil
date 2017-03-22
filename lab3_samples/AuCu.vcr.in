@@ -1,0 +1,40 @@
+&CONTROL
+    calculation = 'vc-relax'
+    tprnfor = .true.
+    tstress = .true.
+    pseudo_dir = '/home/bond/Software/qe-6.0/pseudo'
+    outdir = '/home/bond/3320/Lab3/work/Problem3/AuCu0_3.0'
+/ 
+&SYSTEM
+    ibrav = 0
+    nat = 2
+    ntyp = 2
+    ecutwfc = 40
+    ecutrho = 320
+    occupations = 'smearing'
+    smearing = 'mp'
+    degauss = 0.02    
+/
+&ELECTRONS
+    diagonalization = 'david'
+    mixing_beta = 0.2
+    conv_thr = 1e-07
+/ 
+&IONS
+    ion_dynamics = 'bfgs'
+/ 
+&CELL
+    cell_dynamics = 'bfgs'
+/ 
+K_POINTS {automatic}
+ 8 8 8  0 0 0
+ATOMIC_SPECIES
+  Cu 63.546 Cu.pz-d-rrkjus.UPF
+  Au 196.9665 Au.pz-d-rrkjus.UPF
+CELL_PARAMETERS {angstrom}
+ 3.0 0.0 0.0
+ 0.0 3.0 0.0
+ 0.0 0.0 3.3
+ATOMIC_POSITIONS {angstrom}
+  Au 0.00000 0.00000 0.00000
+  Cu 1.50000 1.50000 1.65000

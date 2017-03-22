@@ -1,7 +1,5 @@
-#from aiida_lite.plugins.atomistic.datatypes import *
-#from aiida_lite.lib.workfunction import *
-from ..objects import *
-#from src.util import *
+from src.objects import *
+import numpy
 
 
 class PWscf_inparam(Param):
@@ -26,7 +24,7 @@ def qe_value_map(value):
             return '.true.'
         else:
             return '.false.'
-    elif isinstance(value, float) or isinstance(value, int):
+    elif isinstance(value, (float, numpy.float)) or isinstance(value, (int, numpy.int)):
         return str(value)
     elif isinstance(value, str):
         return "'{}'".format(value)
@@ -36,7 +34,7 @@ def qe_value_map(value):
 
 
 #@wf()
-def write_pwscf_input(me, runpath, params, struc, kpoints, pseudopots):
+def write_pwscf_input(me, runpath, params, struc, kpoints, pseudopots, constraint=None):
     """Make input param string for PW"""
     # automatically fill in missing values
     pcont = params.content
@@ -52,7 +50,7 @@ def write_pwscf_input(me, runpath, params, struc, kpoints, pseudopots):
         inptxt += '/ \n'
     # write the K_POINTS block
     if kpoints.content['option'] == 'automatic':
-        inptxt += 'K_POINTS automatic\n'
+        inptxt += 'K_POINTS {automatic}\n'
     inptxt += ' {:d} {:d} {:d}'.format(*kpoints.content['gridsize'])
     if kpoints.content['offset']:
         inptxt += '  1 1 1\n'
@@ -71,10 +69,10 @@ def write_pwscf_input(me, runpath, params, struc, kpoints, pseudopots):
 
     # Write the ATOMIC_POSITIONS in crystal coords
     inptxt += 'ATOMIC_POSITIONS {angstrom}\n'
-    for site in struc.content['positions']:
-        inptxt += '  {} {:1.5f} {:1.5f} {:1.5f}'.format(site[0], *site[1])
-        if len(site)>2:
-            inptxt += ' {} {} {} \n'.format(*site[2])
+    for index, positions in enumerate(struc.content['positions']):
+        inptxt += '  {} {:1.5f} {:1.5f} {:1.5f}'.format(positions[0], *positions[1])
+        if constraint and constraint.content['atoms'] and str(index) in constraint.content['atoms']:
+            inptxt += ' {} {} {} \n'.format(*constraint.content['atoms'][str(index)])
         else:
             inptxt += '\n'
 
@@ -84,12 +82,13 @@ def write_pwscf_input(me, runpath, params, struc, kpoints, pseudopots):
 
 
 #wf()
-def run_qe_pwscf(me, struc, runpath, pseudopots, params, kpoints):
+def run_qe_pwscf(me, struc, runpath, pseudopots, params, kpoints, constraint=None, ncpu=1):
     pwscf_code = ExternalCode({'path': os.environ['PWSCF_COMMAND']})
     prepare_dir(runpath.path)
-    infile = write_pwscf_input(me, params=params, struc=struc, kpoints=kpoints, runpath=runpath, pseudopots=pseudopots)
+    infile = write_pwscf_input(me, params=params, struc=struc, kpoints=kpoints, runpath=runpath,
+                               pseudopots=pseudopots, constraint=constraint)
     outfile = File({'path': os.path.join(runpath.path, 'pwscf.out')})
-    pwscf_command = "{} < {} > {}".format(pwscf_code.path, infile.path, outfile.path)
+    pwscf_command = "mpirun -np {} {} < {} > {}".format(ncpu, pwscf_code.path, infile.path, outfile.path)
     run_command(pwscf_command)
     return outfile
 
@@ -104,5 +103,7 @@ def parse_qe_pwscf_output(me, outfile):
                 total_force = float(line.split()[3]) * (13.605698066 / 0.529177249)
             if line.lower().startswith('!    total energy'):
                 total_energy = float(line.split()[-2]) * 13.605698066
-    result = {'energy': total_energy, 'force': total_force, 'cpu_time': walltime}
+            if line.lower().startswith('          total   stress'):
+                pressure = float(line.split()[-1])
+    result = {'energy': total_energy, 'force': total_force, 'pressure': pressure}
     return result

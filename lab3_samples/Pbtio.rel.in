@@ -1,0 +1,41 @@
+&CONTROL
+    pseudo_dir = '/home/bond/Software/qe-6.0/pseudo'
+    calculation = 'relax'
+    disk_io = 'none'
+    tstress = .true.
+    tprnfor = .true.
+    outdir = '/home/bond/3320/Lab3/work/Problem2/Ti_displ_0.0'
+/ 
+&SYSTEM
+    nat = 5
+    ecutwfc = 30
+    ntyp = 3
+    ecutrho = 240
+    ibrav = 0
+/ 
+&ELECTRONS
+    diagonalization = 'david'
+    mixing_beta = 0.7
+    conv_thr = 1e-07
+/ 
+&IONS
+    ion_dynamics = 'bfgs'
+/ 
+&CELL
+/ 
+K_POINTS {automatic}
+ 3 3 3  1 1 1
+ATOMIC_SPECIES
+  Pb 207.2 Pb.pz-d-van.UPF
+  O 15.9994 O.pz-rrkjus.UPF
+  Ti 47.88 Ti.pz-sp-van_ak.UPF
+CELL_PARAMETERS {angstrom}
+ 3.9 0.0 0.0
+ 0.0 3.9 0.0
+ 0.0 0.0 3.9
+ATOMIC_POSITIONS {angstrom}
+  Pb 0.00000 0.00000 0.00000 0 0 0 
+  Ti 1.95000 1.95000 1.95000 0 0 0 
+  O 0.00000 1.95000 1.95000
+  O 1.95000 0.00000 1.95000
+  O 1.95000 1.95000 0.00000

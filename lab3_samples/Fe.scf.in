@@ -1,0 +1,39 @@
+&CONTROL
+    calculation = 'scf'
+    outdir = '/home/bond/3320/Lab3/work/Problem1/3.0'
+    tprnfor = .true.
+    pseudo_dir = '/home/bond/Software/qe-6.0/pseudo'
+    tstress = .true.
+/ 
+&SYSTEM
+    smearing = 'mp'
+    occupations = 'smearing'
+    starting_magnetization(1) = 0.7
+    nat = 2
+    degauss = 0.02
+    ecutwfc = 30
+    nspin = 2
+    ntyp = 1
+    ecutrho = 240
+    ibrav = 0
+/ 
+&ELECTRONS
+    diagonalization = 'david'
+    mixing_beta = 0.5
+    conv_thr = 1e-07
+/ 
+&IONS
+/ 
+&CELL
+/ 
+K_POINTS automatic
+ 3 3 3  0 0 0
+ATOMIC_SPECIES
+  Fe 55.847 Fe.pbe-nd-rrkjus.UPF
+CELL_PARAMETERS {angstrom}
+ 3.0 0.0 0.0
+ -1.5 2.598076211353316 0.0
+ 0.0 0.0 4.898979485566356
+ATOMIC_POSITIONS {angstrom}
+  Fe 0.00000 0.00000 0.00000
+  Fe 0.00000 1.73205 2.44949

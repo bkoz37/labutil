@@ -61,6 +61,19 @@ class Param(Generic):
     pass
 
 
+class Constraint(Param):
+    """
+    Data class describing constraints on the structure for relaxation and dynamics calculations
+    example:
+        constraint = {'atoms': {'3': [0, 0, 0],
+                                '4': [1, 1, 1]}
+                      'cell' : 'volume'
+                      }
+
+    """
+    pass
+
+
 class Struc(Param):
     """
     Data class containing information about a structure
@@ -137,7 +150,12 @@ class Potential(File):
 
 class PseudoPotential(Potential):
     """Data class to store information about a Pseudo Potential file"""
-    pass
+    def __init__(self, **kwargs):
+        if 'path' not in kwargs:
+            name = kwargs['name']
+            potpath = os.path.join(os.environ['ESPRESSO_PSEUDO'], name)
+            kwargs.update({'path': potpath})
+        super().__init__(**kwargs)
 
 
 class ClassicalPotential(Potential):
@@ -151,3 +169,7 @@ def ase2struc(ase_atoms):
 
 def struc2ase(struc):
     return Struc.to_ase(struc)
+
+
+#def wf(func):
+#    return func

@@ -1,4 +1,4 @@
-from src.plugins.pwscf import *
+from labutil.src.plugins.pwscf import *
 from ase.spacegroup import crystal
 from ase.io import write
 from ase.build import *

@@ -1,4 +1,4 @@
-from src.plugins.pwscf import *
+from labutil.src.plugins.pwscf import *
 from ase.io import write
 from ase import Atoms
 import matplotlib.pyplot as plt

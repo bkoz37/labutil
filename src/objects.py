@@ -160,6 +160,11 @@ class PseudoPotential(Potential):
 
 class ClassicalPotential(Potential):
     """ Classical potential, e.g. EAM, Buckingham, OPLS etc """
+    def __init__(self, **kwargs):
+        if 'path' not in kwargs:
+            potpath = os.path.join(os.environ['LAMMPS_POTENTIALS'], kwargs['name'])
+            kwargs.update({'path': potpath})
+        super().__init__(**kwargs)
     pass
 
 

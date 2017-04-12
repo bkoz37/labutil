@@ -1,6 +1,6 @@
-import os
+import numpy
 from string import Template
-from ..objects import *
+from labutil.src.objects import *
 from ase.io.lammpsrun import read_lammps_dump
 
 
@@ -29,33 +29,38 @@ def write_lammps_data(me, struc, runpath):
 
 
 #@wf()
-def write_lammps_input(me, datafile, runpath, in_template, potential=None):
+def write_lammps_input(me, datafile, runpath, rdffile, intemplate, inparam, potential):
     """make Lammps input script"""
     if potential:
         ppath = potential.path
     else:
         ppath = ''
 
-    dumpfile = os.path.join(runpath.path, 'lammps.dump')
-    subst = {'DATAINPUT': datafile.path, 'POTENTIAL': ppath, 'DUMP': dumpfile}
-    inptxt = Template(in_template).safe_substitute(subst)
-    infile = os.path.join(runpath.path, 'lammps.in')
-    write_file(infile, inptxt)
-    return File(path=infile)
+    dumpfile = File(path=os.path.join(runpath.path, 'lammps.dump'))
+    subst = {'DATAINPUT': datafile.path, 'POTENTIAL': ppath, 'DUMPFILE': dumpfile.path, 'RDFFILE': rdffile.path}
+    inptxt = Template(intemplate).safe_substitute({**subst, **inparam})
+    infile = TextFile(path=os.path.join(runpath.path, 'lammps.in'), text=inptxt)
+    infile.write()
+    return infile
+
 
 
 #@wf()
-def lammps_run(me, struc, runpath, in_template, potential=None):
+def lammps_run(me, struc, runpath, intemplate, inparam, potential):
     lammps_code = ExternalCode(path=os.environ['LAMMPS_COMMAND'])
     prepare_dir(runpath.path)
-    datafile = write_lammps_data(me, struc=struc, runpath=runpath)
-    infile = write_lammps_input(me, datafile=datafile, potential=potential, runpath=runpath, in_template=in_template)
     logfile = File(path=os.path.join(runpath.path, 'lammps.log'))
     outfile = File(path=os.path.join(runpath.path, 'lammps.out'))
+    rdffile = File(path=os.path.join(runpath.path, 'lammps.rdf'))
+
+    datafile = write_lammps_data(me, struc=struc, runpath=runpath)
+    infile = write_lammps_input(me, datafile=datafile, potential=potential, runpath=runpath, rdffile=rdffile,
+                                intemplate=intemplate, inparam=inparam)
+
     lammps_command = "{} -in {} -log {} > {}".format(lammps_code.path, infile.path,
                                                      logfile.path, outfile.path)
     run_command(lammps_command)
-    return outfile
+    return outfile, rdffile
 
 
 #@wf()
@@ -69,6 +74,51 @@ def get_lammps_energy(me, outfile):
             if 'Lattice constant (Angstoms)' in line:
                 lattice = float(line.split(" = ")[1])
     return energy, lattice
+
+
+#@wf()
+def parse_lammps_thermo(me, outfile):
+    """
+    Parser for the main LAMMPS output file, extracting columns of the thermo output
+    """
+    with open(outfile.path, 'r') as fout:
+        read_temp = False
+        output = []
+        for line in fout:
+            if not read_temp and line.startswith('Step'):
+                read_temp = True
+                continue
+            if read_temp and line.startswith('Loop'):
+                read_temp = False
+                continue
+            if read_temp:
+                values = line.split()
+                output.append(values)
+    outrows = numpy.transpose(numpy.array(output))
+    return outrows
+
+
+#wf()
+def parse_lammps_rdf(me, rdffile):
+    """
+    Parse the RDF file written by LAMMPS
+    """
+    with open(rdffile.path, 'r') as rdfout:
+        rdfs = []
+        buffer = []
+        for line in rdfout:
+            values = line.split()
+            if line.startswith('#'):
+                continue
+            elif len(values) == 2:
+                nbins = values[1]
+            else:
+                buffer.append([values[1], values[2]])
+                if len(buffer) == int(nbins):
+                    frame = numpy.transpose(numpy.array(buffer))
+                    rdfs.append(frame)
+                    buffer = []
+    return rdfs
 
 
 def parse_structure_dump(runpath, dumpfilename):

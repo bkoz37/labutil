@@ -1,4 +1,4 @@
-from src.plugins.lammps import *
+from labutil.src.plugins.lammps import *
 from ase.spacegroup import crystal
 from ase.build import *
 import matplotlib.pyplot as plt
@@ -54,7 +54,7 @@ def compute_dynamics(me, size, timestep, nsteps, temperature):
     """
 
     potential = ClassicalPotential(ptype='eam', element='Al', name='Al_zhou.eam.alloy')
-    runpath = Dir(path=os.path.join(os.environ['WORKDIR'], "Lab4", str(size)))
+    runpath = Dir(path=os.path.join(os.environ['WORKDIR'], "Problem1", str(size)))
     struc = make_struc(me, size=size)
     inparam = {
         'TEMPERATURE': temperature,

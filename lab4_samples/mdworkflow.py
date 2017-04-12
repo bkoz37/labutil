@@ -20,7 +20,8 @@ def make_struc(me, size):
 
 def compute_dynamics(me, size, timestep, nsteps, temperature):
     """
-    Make an input template and select potential and structure, and the path where to run
+    Make an input template and select potential and structure, and input parameters.
+    Return a pair of output file and RDF file written to the runpath directory.
     """
     intemplate = """
     # ---------- Initialize simulation ---------------------
@@ -41,8 +42,8 @@ def compute_dynamics(me, size, timestep, nsteps, temperature):
     thermo $EVERY
 
     # ---------- Specify ensemble  ---------------------
-    #fix  1 all nve
-    fix  1 all nvt temp $TEMPERATURE $TEMPERATURE $TDAMP
+    fix  1 all nve
+    #fix  1 all nvt temp $TEMPERATURE $TEMPERATURE $TDAMP
 
     # --------- Compute RDF ---------------
     compute rdfall all rdf 100 1 1
@@ -62,7 +63,7 @@ def compute_dynamics(me, size, timestep, nsteps, temperature):
         'TIMESTEP': timestep,
         'EVERY': 100,                 # how often to write thermo output
         'TDAMP': 50 * timestep,       # thermostat damping time scale
-        'RDFFRAME': int(nsteps / 4),   # number of frames for radial distribution function
+        'RDFFRAME': int(nsteps / 4),   # frames for radial distribution function
     }
     outfile, rdffile = lammps_run(me, struc=struc, runpath=runpath, potential=potential,
                                   intemplate=intemplate, inparam=inparam)

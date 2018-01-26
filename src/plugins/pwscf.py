@@ -33,8 +33,7 @@ def qe_value_map(value):
         raise ValueError
 
 
-#@wf()
-def write_pwscf_input(me, runpath, params, struc, kpoints, pseudopots, constraint=None):
+def write_pwscf_input(runpath, params, struc, kpoints, pseudopots, constraint=None):
     """Make input param string for PW"""
     # automatically fill in missing values
     pcont = params.content
@@ -81,11 +80,10 @@ def write_pwscf_input(me, runpath, params, struc, kpoints, pseudopots, constrain
     return infile
 
 
-#wf()
-def run_qe_pwscf(me, struc, runpath, pseudopots, params, kpoints, constraint=None, ncpu=1):
+def run_qe_pwscf(struc, runpath, pseudopots, params, kpoints, constraint=None, ncpu=1):
     pwscf_code = ExternalCode({'path': os.environ['PWSCF_COMMAND']})
     prepare_dir(runpath.path)
-    infile = write_pwscf_input(me, params=params, struc=struc, kpoints=kpoints, runpath=runpath,
+    infile = write_pwscf_input(params=params, struc=struc, kpoints=kpoints, runpath=runpath,
                                pseudopots=pseudopots, constraint=constraint)
     outfile = File({'path': os.path.join(runpath.path, 'pwscf.out')})
     pwscf_command = "mpirun -np {} {} < {} > {}".format(ncpu, pwscf_code.path, infile.path, outfile.path)
@@ -93,8 +91,7 @@ def run_qe_pwscf(me, struc, runpath, pseudopots, params, kpoints, constraint=Non
     return outfile
 
 
-#@wf()
-def parse_qe_pwscf_output(me, outfile):
+def parse_qe_pwscf_output(outfile):
     with open(outfile.path, 'r') as outf:
         for line in outf:
             if line.lower().startswith('     pwscf'):

@@ -4,8 +4,8 @@ from ase import Atoms
 import matplotlib.pyplot as plt
 
 
-#@wf()
-def make_struc(me, alat, displacement=0):
+
+def make_struc(alat, displacement=0):
     """
     Creates the crystal structure using ASE.
     :param alat: Lattice parameter in angstrom
@@ -21,15 +21,15 @@ def make_struc(me, alat, displacement=0):
     return structure
 
 
-#@wf()
-def compute_energy(me, alat, nk, ecut, displ=0):
+
+def compute_energy(alat, nk, ecut, displ=0):
     """
     Make an input template and select potential and structure, and the path where to run
     """
     pseudopots = {'Pb': PseudoPotential(ptype='uspp', element='Pb', functional='LDA', name='Pb.pz-d-van.UPF'),
                   'Ti': PseudoPotential(ptype='uspp', element='Ti', functional='LDA', name='Ti.pz-sp-van_ak.UPF'),
                   'O': PseudoPotential(ptype='uspp', element='O', functional='LDA', name='O.pz-rrkjus.UPF')}
-    struc = make_struc(me, alat=alat, displacement=displ)
+    struc = make_struc(alat=alat, displacement=displ)
     # fix the Pb and Ti atoms in place during relaxation
     constraint = Constraint(atoms={'0': [0,0,0], '1': [0,0,0]})
     kpts = Kpoints(gridsize=[nk, nk, nk], option='automatic', offset=True)
@@ -59,21 +59,21 @@ def compute_energy(me, alat, nk, ecut, displ=0):
         'CELL': {},
         })
 
-    output_file = run_qe_pwscf(me, runpath=runpath, struc=struc,  pseudopots=pseudopots,
+    output_file = run_qe_pwscf(runpath=runpath, struc=struc,  pseudopots=pseudopots,
                                params=input_params, kpoints=kpts, constraint=constraint, ncpu=2)
-    output = parse_qe_pwscf_output(me, outfile=output_file)
+    output = parse_qe_pwscf_output(outfile=output_file)
     return output
 
 
-#@wf()
-def lattice_scan(me):
+
+def lattice_scan():
     nk = 3
     ecut = 30
     alat_list = numpy.linspace(3.8, 4.0, 11)
     print(alat_list)
     energy_list = []
     for alat in alat_list:
-        output = compute_energy(me, alat=alat, ecut=ecut, nk=nk)
+        output = compute_energy(alat=alat, ecut=ecut, nk=nk)
         energy_list.append(output['energy'])
         print(output)
     print(alat_list)
@@ -84,4 +84,4 @@ def lattice_scan(me):
 
 if __name__ == '__main__':
     # put here the function that you actually want to run
-    lattice_scan(me=None)
+    lattice_scan()

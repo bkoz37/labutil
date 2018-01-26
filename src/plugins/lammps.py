@@ -4,8 +4,7 @@ from labutil.src.objects import *
 from ase.io.lammpsrun import read_lammps_dump
 
 
-#@wf()
-def write_lammps_data(me, struc, runpath):
+def write_lammps_data(struc, runpath):
     """Make LAMMPS struc data"""
     datatxt = 'Header of the LAMMPS data file \n\n'
     datatxt += '{} atoms \n'.format(struc.n_atoms)
@@ -28,8 +27,7 @@ def write_lammps_data(me, struc, runpath):
     return File(path=datafile)
 
 
-#@wf()
-def write_lammps_input(me, datafile, runpath, rdffile, intemplate, inparam, potential):
+def write_lammps_input(datafile, runpath, rdffile, intemplate, inparam, potential):
     """make Lammps input script"""
     if potential:
         ppath = potential.path
@@ -44,27 +42,25 @@ def write_lammps_input(me, datafile, runpath, rdffile, intemplate, inparam, pote
     return infile
 
 
-
-#@wf()
-def lammps_run(me, struc, runpath, intemplate, inparam, potential):
+def lammps_run(struc, runpath, intemplate, potential, inparam):
     lammps_code = ExternalCode(path=os.environ['LAMMPS_COMMAND'])
     prepare_dir(runpath.path)
     logfile = File(path=os.path.join(runpath.path, 'lammps.log'))
     outfile = File(path=os.path.join(runpath.path, 'lammps.out'))
     rdffile = File(path=os.path.join(runpath.path, 'lammps.rdf'))
 
-    datafile = write_lammps_data(me, struc=struc, runpath=runpath)
-    infile = write_lammps_input(me, datafile=datafile, potential=potential, runpath=runpath, rdffile=rdffile,
+    datafile = write_lammps_data(struc=struc, runpath=runpath)
+    infile = write_lammps_input(datafile=datafile, potential=potential, runpath=runpath, rdffile=rdffile,
                                 intemplate=intemplate, inparam=inparam)
 
     lammps_command = "{} -in {} -log {} > {}".format(lammps_code.path, infile.path,
                                                      logfile.path, outfile.path)
     run_command(lammps_command)
-    return outfile, rdffile
+# for lab 4   return outfile, rdffile
+    return outfile
 
 
-#@wf()
-def get_lammps_energy(me, outfile):
+def get_lammps_energy(outfile):
     energy = None
     lattice = None
     with open(outfile.path, 'r') as fout:
@@ -76,8 +72,7 @@ def get_lammps_energy(me, outfile):
     return energy, lattice
 
 
-#@wf()
-def parse_lammps_thermo(me, outfile):
+def parse_lammps_thermo(outfile):
     """
     Parser for the main LAMMPS output file, extracting columns of the thermo output
     """
@@ -98,8 +93,7 @@ def parse_lammps_thermo(me, outfile):
     return outrows
 
 
-#wf()
-def parse_lammps_rdf(me, rdffile):
+def parse_lammps_rdf(rdffile):
     """
     Parse the RDF file written by LAMMPS
     """

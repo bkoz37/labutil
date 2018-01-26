@@ -34,8 +34,7 @@ print "Number of atoms = ${natoms}"
 print "Lattice constant (Angstoms) = ${length}"
         """
 
-#@wf()
-def make_struc(me, alat):
+def make_struc(alat):
     """
     Creates the crystal structure using ASE.
     :param alat: Lattice parameter in angstrom
@@ -48,24 +47,22 @@ def make_struc(me, alat):
     return structure
 
 
-#@wf()
-def compute_energy(me, alat, template):
+def compute_energy(alat, template):
     """
     Make an input template and select potential and structure, and the path where to run
     """
     potpath = os.path.join(os.environ['LAMMPS_POTENTIALS'],'Al_zhou.eam.alloy')
     potential = ClassicalPotential(path=potpath, ptype='eam', element=["Al"])
     runpath = Dir(path=os.path.join(os.environ['WORKDIR'], "Lab1", str(alat)))
-    struc = make_struc(me, alat=alat)
-    output_file = lammps_run(me, struc=struc, runpath=runpath, potential=potential, in_template=template)
-    energy, lattice = get_lammps_energy(me, outfile=output_file)
+    struc = make_struc(alat=alat)
+    output_file = lammps_run(struc=struc, runpath=runpath, potential=potential, intemplate=template, inparam={})
+    energy, lattice = get_lammps_energy(outfile=output_file)
     return energy, lattice
 
 
-#@wf()
-def lattice_scan(me):
+def lattice_scan():
     alat_list = numpy.linspace(3.9, 4.3, 6)
-    energy_list = [compute_energy(me, alat=a, template=input_template)[0] for a in alat_list]
+    energy_list = [compute_energy(alat=a, template=input_template)[0] for a in alat_list]
     print(energy_list)
     plt.plot(alat_list, energy_list)
     plt.show()
@@ -73,6 +70,4 @@ def lattice_scan(me):
 
 if __name__ == '__main__':
     # put here the function that you actually want to run
-    #me = Memo(usedb=True)
-    b = lattice_scan(me=None)
-    #me.finalize()
+    lattice_scan()

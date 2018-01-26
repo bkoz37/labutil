@@ -4,7 +4,7 @@ from ase.build import *
 import matplotlib.pyplot as plt
 
 
-def make_struc(me, size):
+def make_struc(size):
     """
     Creates the crystal structure using ASE.
     :param size: supercell multiplier
@@ -18,7 +18,7 @@ def make_struc(me, size):
     return structure
 
 
-def compute_dynamics(me, size, timestep, nsteps, temperature):
+def compute_dynamics(size, timestep, nsteps, temperature):
     """
     Make an input template and select potential and structure, and input parameters.
     Return a pair of output file and RDF file written to the runpath directory.
@@ -56,7 +56,7 @@ def compute_dynamics(me, size, timestep, nsteps, temperature):
 
     potential = ClassicalPotential(ptype='eam', element='Al', name='Al_zhou.eam.alloy')
     runpath = Dir(path=os.path.join(os.environ['WORKDIR'], "Problem1", str(size)))
-    struc = make_struc(me, size=size)
+    struc = make_struc(size=size)
     inparam = {
         'TEMPERATURE': temperature,
         'NSTEPS': nsteps,
@@ -65,15 +65,15 @@ def compute_dynamics(me, size, timestep, nsteps, temperature):
         'TDAMP': 50 * timestep,       # thermostat damping time scale
         'RDFFRAME': int(nsteps / 4),   # frames for radial distribution function
     }
-    outfile, rdffile = lammps_run(me, struc=struc, runpath=runpath, potential=potential,
+    outfile, rdffile = lammps_run(struc=struc, runpath=runpath, potential=potential,
                                   intemplate=intemplate, inparam=inparam)
-    output = parse_lammps_thermo(me, outfile=outfile)
-    rdfs = parse_lammps_rdf(me, rdffile=rdffile)
+    output = parse_lammps_thermo(outfile=outfile)
+    rdfs = parse_lammps_rdf(rdffile=rdffile)
     return output, rdfs
 
 
 def md_run(me):
-    output, rdfs = compute_dynamics(me, size=3, timestep=0.001, nsteps=1000, temperature=300)
+    output, rdfs = compute_dynamics(size=3, timestep=0.001, nsteps=1000, temperature=300)
     [simtime, ke, pe, energy, temp, press, dens, msd] = output
     ## plot output properties
     #plt.plot(simtime, temp)
@@ -89,4 +89,4 @@ def md_run(me):
 
 if __name__ == '__main__':
     # put here the function that you actually want to run
-    md_run(me=None)
+    md_run()

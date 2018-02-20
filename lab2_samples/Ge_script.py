@@ -1,7 +1,6 @@
 from labutil.src.plugins.pwscf import *
 from ase.spacegroup import crystal
 from ase.io import write
-import numpy
 import matplotlib.pyplot as plt
 
 
@@ -24,19 +23,20 @@ def compute_energy(alat, nk, ecut):
     Make an input template and select potential and structure, and the path where to run
     """
     potname = 'Ge.pz-bhs.UPF'
-    potpath = os.path.join(os.environ['ESPRESSO_PSEUDO'], potname)
-    pseudopots = {'Ge': PseudoPotential(path=potpath, ptype='uspp', element='Ge',
-                                        functional='LDA', name=potname)}
+    pseudopath = os.environ['ESPRESSO_PSEUDO']
+    potpath = os.path.join(pseudopath, potname)
+    pseudopots = {'Ge': PseudoPotential(name=potname, path=potpath, ptype='uspp', element='Ge', functional='LDA')}
     struc = make_struc(alat=alat)
     kpts = Kpoints(gridsize=[nk, nk, nk], option='automatic', offset=False)
-    runpath = Dir(path=os.path.join(os.environ['WORKDIR'], "Problem1", str(alat)))
+    runpath = Dir(path=os.path.join(os.environ['WORKDIR'], "Lab2/Problem1", str(alat)))
     input_params = PWscf_inparam({
         'CONTROL': {
             'calculation': 'scf',
-            'pseudo_dir': os.environ['ESPRESSO_PSEUDO'],
+            'pseudo_dir': pseudopath,
             'outdir': runpath.path,
             'tstress': True,
             'tprnfor': True,
+            'disk_io': 'none',
         },
         'SYSTEM': {
             'ecutwfc': ecut,
@@ -54,7 +54,6 @@ def compute_energy(alat, nk, ecut):
                                params=input_params, kpoints=kpts)
     output = parse_qe_pwscf_output(outfile=output_file)
     return output
-
 
 
 def lattice_scan():

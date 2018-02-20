@@ -2,32 +2,32 @@
     tstress = .true.
     tprnfor = .true.
     pseudo_dir = '/home/bond/Software/qe-6.0/pseudo'
-    outdir = '/home/bond/WORK/Lab2/work'
+    outdir = '/home/bond/WORK/Lab2/test'
     calculation = 'scf'
-/ 
+/
 &SYSTEM
     ntyp = 1
     ibrav = 0
     ecutwfc = 30
     nat = 2
-/ 
+/
 &ELECTRONS
     diagonalization = 'david'
     conv_thr = 1e-07
     mixing_beta = 0.5
-/ 
+/
 &IONS
-/ 
+/
 &CELL
-/ 
-K_POINTS automatic
- 3 3 3  0 0 0
+/
+K_POINTS {automatic}
+ 4 4 4  0 0 0
 ATOMIC_SPECIES
   Ge 72.61 Ge.pz-bhs.UPF
 CELL_PARAMETERS {angstrom}
  0.0 2.5 2.5
  2.5 0.0 2.5
  2.5 2.5 0.0
-ATOMIC_POSITIONS {crystal}
+ATOMIC_POSITIONS {angstrom}
   Ge 0.00000 0.00000 0.00000
-  Ge 0.25000 0.25000 0.25000
+  Ge 1.25000 1.25000 1.25000

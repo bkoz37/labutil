@@ -3,7 +3,7 @@
     tprnfor = .true.
     tstress = .true.
     pseudo_dir = '/home/bond/Software/qe-6.0/pseudo'
-    outdir = '/home/bond/3320/Lab3/work/Problem3/AuCu0_3.0'
+    outdir = '/home/bond/WORK/Lab3/Problem3/AuCu0_3.0'
 / 
 &SYSTEM
     ibrav = 0

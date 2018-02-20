@@ -5,8 +5,7 @@ import numpy
 import matplotlib.pyplot as plt
 
 
-#@wf()
-def make_struc(me, alat):
+def make_struc(alat):
     """
     Creates the crystal structure using ASE.
     :param alat: Lattice parameter in angstrom
@@ -20,8 +19,7 @@ def make_struc(me, alat):
     return structure
 
 
-#@wf()
-def compute_energy(me, alat, nk, ecut):
+def compute_energy(alat, nk, ecut):
     """
     Make an input template and select potential and structure, and the path where to run
     """
@@ -29,7 +27,7 @@ def compute_energy(me, alat, nk, ecut):
     potpath = os.path.join(os.environ['ESPRESSO_PSEUDO'], potname)
     pseudopots = {'Ge': PseudoPotential(path=potpath, ptype='uspp', element='Ge',
                                         functional='LDA', name=potname)}
-    struc = make_struc(me, alat=alat)
+    struc = make_struc(alat=alat)
     kpts = Kpoints(gridsize=[nk, nk, nk], option='automatic', offset=False)
     runpath = Dir(path=os.path.join(os.environ['WORKDIR'], "Problem1", str(alat)))
     input_params = PWscf_inparam({
@@ -52,22 +50,22 @@ def compute_energy(me, alat, nk, ecut):
         'CELL': {},
         })
 
-    output_file = run_qe_pwscf(me, runpath=runpath, struc=struc,  pseudopots=pseudopots,
+    output_file = run_qe_pwscf(runpath=runpath, struc=struc,  pseudopots=pseudopots,
                                params=input_params, kpoints=kpts)
-    output = parse_qe_pwscf_output(me, outfile=output_file)
+    output = parse_qe_pwscf_output(outfile=output_file)
     return output
 
 
-#@wf()
-def lattice_scan(me):
+
+def lattice_scan():
     nk = 3
     ecut = 30
     alat = 5.0
-    output = compute_energy(me, alat=alat, ecut=ecut, nk=nk)
+    output = compute_energy(alat=alat, ecut=ecut, nk=nk)
     energy = output['energy']
     print(energy)
 
 
 if __name__ == '__main__':
     # put here the function that you actually want to run
-    lattice_scan(me=None)
+    lattice_scan()

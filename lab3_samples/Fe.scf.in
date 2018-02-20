@@ -1,6 +1,6 @@
 &CONTROL
     calculation = 'scf'
-    outdir = '/home/bond/3320/Lab3/work/Problem1/3.0'
+    outdir = '/home/bond/WORK/Lab3/Problem1/3.0'
     tprnfor = .true.
     pseudo_dir = '/home/bond/Software/qe-6.0/pseudo'
     tstress = .true.

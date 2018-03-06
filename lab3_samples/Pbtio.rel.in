@@ -26,7 +26,7 @@
 K_POINTS {automatic}
  3 3 3  1 1 1
 ATOMIC_SPECIES
-  Pb 207.2 Pb.pz-dn-rrkjus_psl.0.2.2.UPF
+  Pb 207.2 Pb.pz-d-van.UPF
   O 15.9994 O.pz-rrkjus.UPF
   Ti 47.867 Ti.pz-sp-van_ak.UPF
 CELL_PARAMETERS {angstrom}

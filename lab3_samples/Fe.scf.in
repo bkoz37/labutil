@@ -4,6 +4,7 @@
     tprnfor = .true.
     pseudo_dir = '/home/bond/Software/qe-6.1/pseudo'
     tstress = .true.
+    disk_io = 'none'
 / 
 &SYSTEM
     smearing = 'mp'

@@ -26,7 +26,7 @@ def compute_energy(alat, nk, ecut, displ=0):
     """
     Make an input template and select potential and structure, and the path where to run
     """
-    pseudopots = {'Pb': PseudoPotential(ptype='uspp', element='Pb', functional='LDA', name='Pb.pz-dn-rrkjus_psl.0.2.2.UPF'),
+    pseudopots = {'Pb': PseudoPotential(ptype='uspp', element='Pb', functional='LDA', name='Pb.pz-d-van.UPF'),
                   'Ti': PseudoPotential(ptype='uspp', element='Ti', functional='LDA', name='Ti.pz-sp-van_ak.UPF'),
                   'O': PseudoPotential(ptype='uspp', element='O', functional='LDA', name='O.pz-rrkjus.UPF')}
     struc = make_struc(alat=alat, displacement=displ)
@@ -34,7 +34,7 @@ def compute_energy(alat, nk, ecut, displ=0):
     constraint = Constraint(atoms={'0': [0,0,0], '1': [0,0,0]})
     kpts = Kpoints(gridsize=[nk, nk, nk], option='automatic', offset=True)
     dirname = 'PbTiO3_a_{}_ecut_{}_nk_{}_displ_{}'.format(alat, ecut, nk, displ)
-    runpath = Dir(path=os.path.join(os.environ['WORKDIR'], "Problem2", dirname))
+    runpath = Dir(path=os.path.join(os.environ['WORKDIR'], "Lab3/Problem2", dirname))
     input_params = PWscf_inparam({
         'CONTROL': {
             'calculation': 'scf',

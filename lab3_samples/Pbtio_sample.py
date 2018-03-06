@@ -26,7 +26,7 @@ def compute_energy(alat, nk, ecut, displ=0):
     """
     Make an input template and select potential and structure, and the path where to run
     """
-    pseudopots = {'Pb': PseudoPotential(ptype='uspp', element='Pb', functional='LDA', name='Pb.pz-d-van.UPF'),
+    pseudopots = {'Pb': PseudoPotential(ptype='uspp', element='Pb', functional='LDA', name='Pb.pz-dn-rrkjus_psl.0.2.2.UPF'),
                   'Ti': PseudoPotential(ptype='uspp', element='Ti', functional='LDA', name='Ti.pz-sp-van_ak.UPF'),
                   'O': PseudoPotential(ptype='uspp', element='O', functional='LDA', name='O.pz-rrkjus.UPF')}
     struc = make_struc(alat=alat, displacement=displ)

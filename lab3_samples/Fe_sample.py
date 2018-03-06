@@ -40,6 +40,7 @@ def compute_energy(alat, nk, ecut):
             'outdir': runpath.path,
             'tstress': True,
             'tprnfor': True,
+            'disk_io': 'none',
         },
         'SYSTEM': {
             'ecutwfc': ecut,

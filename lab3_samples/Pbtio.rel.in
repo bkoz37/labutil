@@ -1,5 +1,5 @@
 &CONTROL
-    pseudo_dir = '/home/bond/Software/qe-6.0/pseudo'
+    pseudo_dir = '/home/bond/Software/qe-6.1/pseudo'
     calculation = 'relax'
     disk_io = 'none'
     tstress = .true.

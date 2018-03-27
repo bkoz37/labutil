@@ -56,8 +56,12 @@ def lammps_run(struc, runpath, intemplate, potential, inparam):
     lammps_command = "{} -in {} -log {} > {}".format(lammps_code.path, infile.path,
                                                      logfile.path, outfile.path)
     run_command(lammps_command)
-# for lab 4   return outfile, rdffile
     return outfile
+
+
+def get_rdf(runpath):
+    rdffile = File(path=os.path.join(runpath.path, 'lammps.rdf'))
+    return rdffile
 
 
 def get_lammps_energy(outfile):

@@ -75,7 +75,7 @@ def compute_dynamics(size, timestep, nsteps, temperature):
 
 def md_run():
     output, rdfs = compute_dynamics(size=3, timestep=0.001, nsteps=1000, temperature=300)
-    [simtime, ke, pe, energy, temp, press, dens, msd] = output
+    [simtime, pe, ke, energy, temp, press, dens, msd] = output
     ## ------- plot output properties
     #plt.plot(simtime, temp)
     #plt.show()

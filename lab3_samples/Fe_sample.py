@@ -13,10 +13,13 @@ def make_struc(alat):
     :param alat: Lattice parameter in angstrom
     :return: structure object converted from ase
     """
-    fecell = bulk('Fe', 'bcc', a=alat)
+    fecell = bulk('Fe', 'hcp', a=alat)
     # check how your cell looks like
     #write('s.cif', gecell)
+    print(fecell, fecell.get_atomic_numbers())
+    fecell.set_atomic_numbers([26, 27])
     structure = Struc(ase2struc(fecell))
+    print(structure.species)
     return structure
 
 
@@ -27,7 +30,10 @@ def compute_energy(alat, nk, ecut):
     potname = 'Fe.pbe-nd-rrkjus.UPF'
     potpath = os.path.join(os.environ['ESPRESSO_PSEUDO'], potname)
     pseudopots = {'Fe': PseudoPotential(path=potpath, ptype='uspp', element='Fe',
-                                        functional='GGA', name=potname)}
+                                        functional='GGA', name=potname),
+                  'Co': PseudoPotential(path=potpath, ptype='uspp', element='Fe',
+                                        functional='GGA', name=potname)
+                  }
     struc = make_struc(alat=alat)
     kpts = Kpoints(gridsize=[nk, nk, nk], option='automatic', offset=False)
     dirname = 'Fe_a_{}_ecut_{}_nk_{}'.format(alat, ecut, nk)

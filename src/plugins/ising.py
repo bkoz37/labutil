@@ -108,8 +108,7 @@ def mc_run(N,n_eq,n_mc,T):
         magnetization += deltaM
         E_eq.append(energy / N**2)                          # Record energy
         M_eq.append(magnetization / N**2)                   # Record magnetization
-        #E_eq.append(state_hamiltonian(state)/N**2)           # Record energy
-        #M_eq.append(state_magnetization(state)/N**2)         # Record magnetization
+
     
     # Initialize storage lists
 
@@ -121,8 +120,7 @@ def mc_run(N,n_eq,n_mc,T):
         magnetization += deltaM
         E.append(energy / N**2)                             # Record energy
         M.append(magnetization / N**2)                      # Record magnetization
-        #E.append(state_hamiltonian(state)/N**2)           # Record energy
-        #M.append(state_magnetization(state)/N**2)         # Record magnetization
+
         
     return E,M,E_eq,M_eq
     

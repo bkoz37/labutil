@@ -4,6 +4,8 @@ Predefined functions for AP275 lab 4 -
 Ising model on 2D square lattice
 """
 import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.animation as animation
 
 
 def initiate_state(N):
@@ -77,6 +79,18 @@ def spin_flip(state, beta):
 
     return state, deltaE, deltaM
 
+def animator(imagelist):
+    fig_animation = plt.figure() # make figure
+    im = plt.imshow(imagelist[0], cmap=plt.get_cmap('gray'))
+    def updatefig(j):
+        # set the data in the axesimage object
+        im.set_array(imagelist[j])
+        # return the artists set
+        return [im]
+    
+    ani = animation.FuncAnimation(fig_animation, updatefig, frames=range(len(imagelist)), interval=25, blit=True, repeat = False)
+    plt.show()
+    return ani
 
 def mc_run(N,n_eq,n_mc,T):
     """
@@ -99,8 +113,9 @@ def mc_run(N,n_eq,n_mc,T):
     E = []
     M = []
     E_eq = []
-    M_eq = []
-
+    M_eq = []    
+    imagelist = []
+    
     # Come to equilibrium
     for i in range(n_eq*(N**2)):
         state, deltaE, deltaM = spin_flip(state,beta)       # Spin flip
@@ -108,9 +123,8 @@ def mc_run(N,n_eq,n_mc,T):
         magnetization += deltaM
         E_eq.append(energy / N**2)                          # Record energy
         M_eq.append(magnetization / N**2)                   # Record magnetization
-
-    
-    # Initialize storage lists
+        if (i%(N**2)==0):
+            imagelist.append(state.copy())
 
     
     # Collect statistics
@@ -120,7 +134,9 @@ def mc_run(N,n_eq,n_mc,T):
         magnetization += deltaM
         E.append(energy / N**2)                             # Record energy
         M.append(magnetization / N**2)                      # Record magnetization
+        if (i%(N**2)==0):
+            imagelist.append(state.copy())   
 
-        
-    return E,M,E_eq,M_eq
+    
+    return E,M,E_eq,M_eq,imagelist
     

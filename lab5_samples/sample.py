@@ -16,7 +16,7 @@ n_mc = 100          # Average number of Monte Carlo steps (flips) per site
 #### RUN MC CODE OVER ####
 import time
 start_time = time.time()
-E, M, E_eq, M_eq = mc_run(N,n_eq,n_mc,T)
+E, M, E_eq, M_eq, imagelist = mc_run(N,n_eq,n_mc,T)
 print("--- %s seconds ---" % (time.time() - start_time))
 
 x_eq = np.arange(n_eq*N*N)
@@ -37,5 +37,6 @@ ax_mag.legend()
 ax_mag.set_ylabel('Magnetization per site')
 ax_mag.set_xlabel('Number of flip attempts')
 
-
+animator(imagelist)
 plt.show()
+

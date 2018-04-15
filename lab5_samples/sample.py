@@ -1,23 +1,16 @@
-# -*- coding: utf-8 -*-
-"""
-Ising main
-"""
-import numpy as np
 from labutil.src.plugins.ising import *
 import matplotlib.pyplot as plt
+
 # Variable initialization
 
-T = 2 # Temperature range to scan (kb = 1)
+T = 2 # Temperature range to scan (units of K_b = 1)
 N = 12                      # Spin lattice size
 
-n_eq = 75          # Average number of equillibriation steps (flips) per site
+n_eq = 75          # Average number of equilibriation steps (flips) per site
 n_mc = 100          # Average number of Monte Carlo steps (flips) per site
 
-#### RUN MC CODE OVER ####
-import time
-start_time = time.time()
+#### RUN MC CODE ####
 E, M, E_eq, M_eq, imagelist = mc_run(N,n_eq,n_mc,T)
-print("--- %s seconds ---" % (time.time() - start_time))
 
 x_eq = np.arange(n_eq*N*N)
 x_mc = np.arange(n_mc*N*N)+(n_eq*N*N)

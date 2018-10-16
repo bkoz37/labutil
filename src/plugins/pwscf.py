@@ -1,6 +1,6 @@
 from labutil.src.objects import *
 import numpy
-
+import copy
 
 class PWscf_inparam(Param):
     """
@@ -36,7 +36,7 @@ def qe_value_map(value):
 def write_pwscf_input(runpath, params, struc, kpoints, pseudopots, constraint=None):
     """Make input param string for PW"""
     # automatically fill in missing values
-    pcont = params.content
+    pcont = copy.deepcopy(params.content)
     pcont['SYSTEM']['ntyp'] = struc.n_species
     pcont['SYSTEM']['nat'] = struc.n_atoms
     pcont['SYSTEM']['ibrav'] = 0

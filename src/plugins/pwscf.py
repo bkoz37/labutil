@@ -80,13 +80,13 @@ def write_pwscf_input(runpath, params, struc, kpoints, pseudopots, constraint=No
     return infile
 
 
-def run_qe_pwscf(struc, runpath, pseudopots, params, kpoints, constraint=None, ncpu=1):
+def run_qe_pwscf(struc, runpath, pseudopots, params, kpoints, constraint=None, ncpu=1, nkpool=1):
     pwscf_code = ExternalCode({'path': os.environ['PWSCF_COMMAND']})
     prepare_dir(runpath.path)
     infile = write_pwscf_input(params=params, struc=struc, kpoints=kpoints, runpath=runpath,
                                pseudopots=pseudopots, constraint=constraint)
     outfile = File({'path': os.path.join(runpath.path, 'pwscf.out')})
-    pwscf_command = "mpirun -np {} {} < {} > {}".format(ncpu, pwscf_code.path, infile.path, outfile.path)
+    pwscf_command = "mpirun -np {} {} -nk {} < {} > {}".format(ncpu, pwscf_code.path, nkpool, infile.path, outfile.path)
     run_command(pwscf_command)
     return outfile
 

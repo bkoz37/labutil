@@ -1,7 +1,7 @@
 from labutil.src.plugins.pwscf import *
 from ase.spacegroup import crystal
 from ase.io import write
-from ase.build import *
+from ase.build import bulk
 import numpy
 import matplotlib.pyplot as plt
 

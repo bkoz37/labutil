@@ -1,6 +1,6 @@
 from labutil.src.plugins.lammps import *
 from ase.spacegroup import crystal
-from ase.build import *
+from ase.build import make_supercell
 import matplotlib.pyplot as plt
 
 

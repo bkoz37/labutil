@@ -91,7 +91,7 @@ def parse_lammps_thermo(outfile):
                 read_temp = False
                 continue
             if read_temp:
-                values = line.split()
+                values = [float(value) for value in line.split()]
                 output.append(values)
     outrows = numpy.transpose(numpy.array(output))
     return outrows
@@ -111,7 +111,7 @@ def parse_lammps_rdf(rdffile):
             elif len(values) == 2:
                 nbins = values[1]
             else:
-                buffer.append([values[1], values[2]])
+                buffer.append([float(values[1]), float(values[2])])
                 if len(buffer) == int(nbins):
                     frame = numpy.transpose(numpy.array(buffer))
                     rdfs.append(frame)

@@ -1,6 +1,6 @@
 import ase, json
-from .util import *
-
+#from .util import *
+import labutil.util as util
 
 class Generic(object):
     """
@@ -48,7 +48,7 @@ class TextFile(File):
         return self.content['text']
 
     def write(self):
-        write_file(fname=self.path, text=self.text)
+        util.write_file(fname=self.path, text=self.text)
 
 
 class ExternalCode(File):
@@ -148,25 +148,6 @@ class Potential(File):
     pass
 
 
-class PseudoPotential(Potential):
-    """Data class to store information about a Pseudo Potential file"""
-    def __init__(self, **kwargs):
-        if 'path' not in kwargs:
-            name = kwargs['name']
-            potpath = os.path.join(os.environ['ESPRESSO_PSEUDO'], name)
-            kwargs.update({'path': potpath})
-        super().__init__(**kwargs)
-
-
-class ClassicalPotential(Potential):
-    """ Classical potential, e.g. EAM, Buckingham, OPLS etc """
-    def __init__(self, **kwargs):
-        if 'path' not in kwargs:
-            potpath = os.path.join(os.environ['LAMMPS_POTENTIALS'], kwargs['name'])
-            kwargs.update({'path': potpath})
-        super().__init__(**kwargs)
-    pass
-
 
 def ase2struc(ase_atoms):
     return Struc.from_ase(ase_atoms)
@@ -174,7 +155,3 @@ def ase2struc(ase_atoms):
 
 def struc2ase(struc):
     return Struc.to_ase(struc)
-
-
-#def wf(func):
-#    return func

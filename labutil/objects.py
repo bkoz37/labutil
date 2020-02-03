@@ -1,5 +1,4 @@
 import ase, json
-#from .util import *
 import labutil.util as util
 
 class Generic(object):

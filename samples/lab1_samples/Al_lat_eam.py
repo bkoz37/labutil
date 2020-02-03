@@ -1,5 +1,5 @@
-from labutil.labutil.plugins.lammps import ClassicalPotential, lammps_run, get_lammps_energy
-from labutil.labutil.objects import Struc, Dir, ase2struc
+from labutil.plugins.lammps import ClassicalPotential, lammps_run, get_lammps_energy
+from labutil.objects import Struc, Dir, ase2struc
 from ase.spacegroup import crystal
 from ase.build import make_supercell
 import numpy, os

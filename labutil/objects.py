@@ -1,4 +1,4 @@
-import ase, json
+import ase, json, os
 import labutil.util as util
 
 class Generic(object):
@@ -146,6 +146,25 @@ class Potential(File):
     """Data class to store information about a Pseudo Potential file"""
     pass
 
+
+class PseudoPotential(Potential):
+    """Data class to store information about a Pseudo Potential file"""
+    def __init__(self, **kwargs):
+        if 'path' not in kwargs:
+            name = kwargs['name']
+            potpath = os.path.join(os.environ['QE_POTENTIALS'], name)
+            kwargs.update({'path': potpath})
+        super().__init__(**kwargs)
+
+
+class ClassicalPotential(Potential):
+    """ Classical potential, e.g. EAM, Buckingham, OPLS etc """
+    def __init__(self, **kwargs):
+        if 'path' not in kwargs:
+            potpath = os.path.join(os.environ['LAMMPS_POTENTIALS'], kwargs['name'])
+            kwargs.update({'path': potpath})
+        super().__init__(**kwargs)
+    pass
 
 
 def ase2struc(ase_atoms):

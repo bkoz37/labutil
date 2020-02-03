@@ -1,18 +1,8 @@
 import numpy, os, ase
 from string import Template
-from labutil.objects import File, Potential, TextFile, ExternalCode
+from labutil.objects import File, TextFile, ExternalCode
 from labutil.util import write_file, prepare_dir, run_command
 from ase.io.lammpsrun import read_lammps_dump
-
-
-class ClassicalPotential(Potential):
-    """ Classical potential, e.g. EAM, Buckingham, OPLS etc """
-    def __init__(self, **kwargs):
-        if 'path' not in kwargs:
-            potpath = os.path.join(os.environ['LAMMPS_POTENTIALS'], kwargs['name'])
-            kwargs.update({'path': potpath})
-        super().__init__(**kwargs)
-    pass
 
 
 def write_lammps_data(struc, runpath):

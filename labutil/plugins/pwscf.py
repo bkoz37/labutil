@@ -1,6 +1,7 @@
-from labutil.objects import Potential, TextFile, ExternalCode, File, Param
 import numpy, os, copy
+from labutil.objects import TextFile, ExternalCode, File, Param
 from labutil.util import prepare_dir, run_command
+
 
 class PWscf_inparam(Param):
     """
@@ -8,15 +9,6 @@ class PWscf_inparam(Param):
     it does not include info on the cell itself, since that will be taken from a Struc object
     """
     pass
-
-class PseudoPotential(Potential):
-    """Data class to store information about a Pseudo Potential file"""
-    def __init__(self, **kwargs):
-        if 'path' not in kwargs:
-            name = kwargs['name']
-            potpath = os.path.join(os.environ['QE_POTENTIALS'], name)
-            kwargs.update({'path': potpath})
-        super().__init__(**kwargs)
 
 
 def qe_value_map(value):

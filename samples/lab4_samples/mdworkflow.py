@@ -1,7 +1,9 @@
-from labutil.src.plugins.lammps import *
+import numpy, os
+import matplotlib.pyplot as plt
+from labutil.plugins.lammps import lammps_run, parse_lammps_rdf, parse_lammps_thermo, get_rdf
+from labutil.objects import Struc, Dir, ase2struc, ClassicalPotential
 from ase.spacegroup import crystal
 from ase.build import make_supercell
-import matplotlib.pyplot as plt
 
 
 def make_struc(size):

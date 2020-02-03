@@ -39,7 +39,7 @@ def compute_energy(alat, nk, ecut, displ=0):
     input_params = PWscf_inparam({
         'CONTROL': {
             'calculation': 'scf',
-            'pseudo_dir': os.environ['ESPRESSO_PSEUDO'],
+            'pseudo_dir': os.environ['QE_POTENTIALS'],
             'outdir': runpath.path,
             'tstress': True,
             'tprnfor': True,

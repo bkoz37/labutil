@@ -25,7 +25,7 @@ def compute_energy(alat, nk, ecut):
     Make an input template and select potential and structure, and the path where to run
     """
     potname = 'Ge.pz-bhs.UPF'
-    pseudopath = os.environ['ESPRESSO_PSEUDO']
+    pseudopath = os.environ['QE_POTENTIALS']
     potpath = os.path.join(pseudopath, potname)
     pseudopots = {'Ge': PseudoPotential(name=potname, path=potpath, ptype='uspp', element='Ge', functional='LDA')}
     struc = make_struc(alat=alat)

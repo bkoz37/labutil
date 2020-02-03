@@ -28,7 +28,7 @@ def compute_energy(alat, nk, ecut):
     Make an input template and select potential and structure, and the path where to run
     """
     potname = 'Fe.pbe-nd-rrkjus.UPF'
-    potpath = os.path.join(os.environ['ESPRESSO_PSEUDO'], potname)
+    potpath = os.path.join(os.environ['QE_POTENTIALS'], potname)
     pseudopots = {'Fe': PseudoPotential(path=potpath, ptype='uspp', element='Fe',
                                         functional='GGA', name=potname),
                   'Co': PseudoPotential(path=potpath, ptype='uspp', element='Fe',
@@ -41,7 +41,7 @@ def compute_energy(alat, nk, ecut):
     input_params = PWscf_inparam({
         'CONTROL': {
             'calculation': 'scf',
-            'pseudo_dir': os.environ['ESPRESSO_PSEUDO'],
+            'pseudo_dir': os.environ['QE_POTENTIALS'],
             'outdir': runpath.path,
             'tstress': True,
             'tprnfor': True,
@@ -75,7 +75,7 @@ def compute_energy_anti(alat, nk, ecut):
     Make an input template and select potential and structure, and the path where to run
     """
     potname = 'Fe.pbe-nd-rrkjus.UPF'
-    potpath = os.path.join(os.environ['ESPRESSO_PSEUDO'], potname)
+    potpath = os.path.join(os.environ['QE_POTENTIALS'], potname)
     pseudopots = {'Fe': PseudoPotential(path=potpath, ptype='uspp', element='Fe',
                                         functional='GGA', name=potname),
                   'Co': PseudoPotential(path=potpath, ptype='uspp', element='Fe',
@@ -88,7 +88,7 @@ def compute_energy_anti(alat, nk, ecut):
     input_params = PWscf_inparam({
         'CONTROL': {
             'calculation': 'scf',
-            'pseudo_dir': os.environ['ESPRESSO_PSEUDO'],
+            'pseudo_dir': os.environ['QE_POTENTIALS'],
             'outdir': runpath.path,
             'tstress': True,
             'tprnfor': True,

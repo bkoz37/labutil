@@ -1,8 +1,8 @@
 &CONTROL
     calculation = 'scf'
-    outdir = '/home/bond/WORK/Lab3/Problem1/3.0'
+    outdir = '/home/bond/Work/Lab3/Problem1'
     tprnfor = .true.
-    pseudo_dir = '/home/bond/Software/qe-6.1/pseudo'
+    pseudo_dir = '/home/bond/Software/qe-6.4.1/pseudo'
     tstress = .true.
     disk_io = 'none'
 / 

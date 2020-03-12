@@ -1,10 +1,10 @@
 &CONTROL
-    pseudo_dir = '/home/bond/Software/qe-6.1/pseudo'
+    pseudo_dir = '/home/bond/Software/qe-6.4.1/pseudo'
     calculation = 'relax'
     disk_io = 'none'
     tstress = .true.
     tprnfor = .true.
-    outdir = '/home/bond/WORK/Lab3/Problem2/Ti_displ_0.0'
+    outdir = '/home/bond/Work/Lab3/Problem2'
 / 
 &SYSTEM
     nat = 5

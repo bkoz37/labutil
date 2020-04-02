@@ -12,7 +12,7 @@ intemplate = """
     dimension  3
     boundary   p p p
     newton off
-    read_data /bond/Work/Lab4/AgI.data 
+    read_data /home/bond/Work/Lab4/AgI.data 
 
     pair_style mff
     pair_coeff * * /bond/Work/Lab4/AgI_Three.txt 47 53 yes yes

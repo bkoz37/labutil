@@ -15,7 +15,7 @@ intemplate = """
     read_data /home/bond/Work/Lab4/AgI.data 
 
     pair_style mff
-    pair_coeff * * /bond/Work/Lab4/AgI_Three.txt 47 53 yes yes
+    pair_coeff * * /home/bond/Work/Lab4/AgI_Three.txt 47 53 yes yes
 
     velocity all create $TEMPERATURE 126342 dist gaussian rot yes mom yes
 

@@ -53,7 +53,7 @@ intemplate = """
     unfix 4
 """
 
-def compute_AgI_dynamics(timestep, nsteps, temperature):
+def compute_AgI_dynamics(timestep, nsteps, temperature, ncpu):
     """
     Make an input template and select potential and structure, and input parameters.
     Return a pair of output file and RDF file written to the runpath directory.
@@ -71,7 +71,7 @@ def compute_AgI_dynamics(timestep, nsteps, temperature):
         'RDFFRAME': int(nsteps / 4),   # frames for radial distribution function
     }
     outfile = lammps_run(struc=struc, runpath=runpath, potential=potential,
-                                  intemplate=intemplate, inparam=inparam)
+                                  intemplate=intemplate, inparam=inparam, ncpu=ncpu)
     output = parse_lammps_thermo(outfile=outfile)
     rdffile = get_rdf(runpath=runpath)
     rdfs = parse_lammps_rdf(rdffile=rdffile)
@@ -79,7 +79,7 @@ def compute_AgI_dynamics(timestep, nsteps, temperature):
 
 
 def md_run():
-    output, rdfs = compute_AgI_dynamics(timestep=0.001, nsteps=1000, temperature=300)
+    output, rdfs = compute_AgI_dynamics(timestep=0.001, nsteps=1000, temperature=300, ncpu=16)
     [simtime, pe, ke, energy, temp, press, dens, msd] = output
     ## ------- plot output properties
     #plt.plot(simtime, temp)

@@ -53,6 +53,19 @@ intemplate = """
     unfix 4
 """
 
+def make_struc(size):
+    """
+    Creates the crystal structure using ASE.
+    :param size: supercell multiplier
+    :return: structure object converted from ase
+    """
+    alat = 4.10
+    unitcell = crystal('Al', [(0, 0, 0)], spacegroup=225, cellpar=[alat, alat, alat, 90, 90, 90])
+    multiplier = numpy.identity(3) * size
+    supercell = make_supercell(unitcell, multiplier)
+    structure = Struc(ase2struc(supercell))
+    return structure
+
 def compute_AgI_dynamics(timestep, nsteps, temperature, ncpu):
     """
     Make an input template and select potential and structure, and input parameters.
@@ -79,8 +92,8 @@ def compute_AgI_dynamics(timestep, nsteps, temperature, ncpu):
 
 
 def md_run():
-    output, rdfs = compute_AgI_dynamics(timestep=0.001, nsteps=1000, temperature=300, ncpu=16)
-    [simtime, pe, ke, energy, temp, press, dens, msd] = output
+    output, rdfs = compute_AgI_dynamics(timestep=0.001, nsteps=1000, temperature=300, ncpu=1)
+    [simtime, temp, epair, emol, etotal, press, vol] = output
     ## ------- plot output properties
     #plt.plot(simtime, temp)
     #plt.show()

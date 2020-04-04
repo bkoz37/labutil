@@ -19,12 +19,6 @@ intemplate = """
 
     velocity all create $TEMPERATURE 126342 dist gaussian rot yes mom yes
 
-    thermo_style one
-    thermo $TOUTPUT 
-
-    #dump 1 all custom 100000 ./AgI.dump id type x y z fx fy fz vx vy vz
-    #dump_modify 1 sort id
-
     group silvers type 1
     group iodines type 2
 
@@ -35,15 +29,11 @@ intemplate = """
     compute rdfall all rdf 1000
     compute rdfpairs all rdf 1000 1 1 1 2 2 2
 
-    variable v equal vol
-    variable t equal temp
+    thermo_style custom step temp etotal press density c_msdall[4] c_msdAg[4] c_msdI[4]
+    thermo $TOUTPUT 
 
-    # record rdf and msd
+    # record rdf
     fix 1 all ave/time 1 $RDFFRAME $RDFFRAME c_rdfall[*] c_rdfpairs[*] file $RDFFILE mode vector
-    fix 2 all ave/time 10000 1 10000 c_msdall[*] c_msdAg[*] c_msdI[*] file AgI.msd mode vector
-
-    # record rolling average of volume and temperature
-    #fix 3 all ave/time 1 10000 10000 v_v v_t file AgI.vt
 
     # ---------- Specify ensemble  ---------------------
     fix 4 all npt temp $TEMPERATURE $TEMPERATURE $TDAMP tri 0.0 0.0 1.0
@@ -93,7 +83,7 @@ def compute_AgI_dynamics(timestep, nsteps, temperature, ncpu):
 
 def md_run():
     output, rdfs = compute_AgI_dynamics(timestep=0.001, nsteps=1000, temperature=300, ncpu=1)
-    [simtime, temp, epair, emol, etotal, press, vol] = output
+    [simtime, temp, etotal, press, dens, msdall, msdAg, msdI] = output
     ## ------- plot output properties
     #plt.plot(simtime, temp)
     #plt.show()

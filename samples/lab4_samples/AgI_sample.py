@@ -29,14 +29,14 @@ intemplate = """
     compute rdfI all rdf 1000 2 2
 
     variable rdfAgFile string "$RDFFILE.Ag"
-    variable rdfIFile string "RDFFILE.I"
+    variable rdfIFile string "$RDFFILE.I"
 
     thermo_style custom step temp etotal press density c_msdAg[4] c_msdI[4]
     thermo $TOUTPUT 
 
     # record rdf
     fix 1 all ave/time 1 $RDFFRAME $RDFFRAME c_rdfAg[*] file ${rdfAgFile} mode vector
-    fix 1 all ave/time 1 $RDFFRAME $RDFFRAME c_rdfI[*] file ${rdfIFile} mode vector
+    fix 2 all ave/time 1 $RDFFRAME $RDFFRAME c_rdfI[*] file ${rdfIFile} mode vector
 
     # ---------- Specify ensemble  ---------------------
     fix 4 all npt temp $TEMPERATURE $TEMPERATURE $TDAMP tri 0.0 0.0 1.0

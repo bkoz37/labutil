@@ -23,13 +23,12 @@ intemplate = """
     group iodines type 2
 
     # ---------- Describe computed properties------------------
-    compute msdall all msd com yes
     compute msdAg silvers msd com yes
     compute msdI iodines msd com yes
     compute rdfall all rdf 1000
     compute rdfpairs all rdf 1000 1 1 1 2 2 2
 
-    thermo_style custom step temp etotal press density c_msdall[4] c_msdAg[4] c_msdI[4]
+    thermo_style custom step temp etotal press density c_msdAg[4] c_msdI[4]
     thermo $TOUTPUT 
 
     # record rdf
@@ -83,7 +82,7 @@ def compute_AgI_dynamics(timestep, nsteps, temperature, ncpu):
 
 def md_run():
     output, rdfs = compute_AgI_dynamics(timestep=0.001, nsteps=1000, temperature=300, ncpu=1)
-    [simtime, temp, etotal, press, dens, msdall, msdAg, msdI] = output
+    [simtime, temp, etotal, press, dens, msdAg, msdI] = output
     ## ------- plot output properties
     #plt.plot(simtime, temp)
     #plt.show()

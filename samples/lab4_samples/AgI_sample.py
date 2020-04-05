@@ -1,7 +1,7 @@
 import numpy, os
 import matplotlib.pyplot as plt
 from labutil.plugins.lammps import lammps_run, parse_lammps_rdf, parse_lammps_thermo, get_rdf
-from labutil.objects import Struc, Dir, ase2struc, ClassicalPotential
+from labutil.objects import File, Struc, Dir, ase2struc, ClassicalPotential
 from ase.spacegroup import crystal
 from ase.build import make_supercell
 
@@ -25,14 +25,18 @@ intemplate = """
     # ---------- Describe computed properties------------------
     compute msdAg silvers msd com yes
     compute msdI iodines msd com yes
-    compute rdfall all rdf 1000
-    compute rdfpairs all rdf 1000 1 1 1 2 2 2
+    compute rdfAg all rdf 1000 1 1
+    compute rdfI all rdf 1000 2 2
+
+    variable rdfAgFile string "$RDFFILE.Ag"
+    variable rdfIFile string "RDFFILE.I"
 
     thermo_style custom step temp etotal press density c_msdAg[4] c_msdI[4]
     thermo $TOUTPUT 
 
     # record rdf
-    fix 1 all ave/time 1 $RDFFRAME $RDFFRAME c_rdfall[*] c_rdfpairs[*] file $RDFFILE mode vector
+    fix 1 all ave/time 1 $RDFFRAME $RDFFRAME c_rdfAg[*] file ${rdfAgFile} mode vector
+    fix 1 all ave/time 1 $RDFFRAME $RDFFRAME c_rdfI[*] file ${rdfIFile} mode vector
 
     # ---------- Specify ensemble  ---------------------
     fix 4 all npt temp $TEMPERATURE $TEMPERATURE $TDAMP tri 0.0 0.0 1.0
@@ -75,13 +79,16 @@ def compute_AgI_dynamics(timestep, nsteps, temperature, ncpu):
     outfile = lammps_run(struc=struc, runpath=runpath, potential=potential,
                                   intemplate=intemplate, inparam=inparam, ncpu=ncpu)
     output = parse_lammps_thermo(outfile=outfile)
-    rdffile = get_rdf(runpath=runpath)
-    rdfs = parse_lammps_rdf(rdffile=rdffile)
-    return output, rdfs
+    rdfAgFile = File(path=os.path.join(runpath.path, 'lammps.rdf.Ag')) 
+    rdfIFile = File(path=os.path.join(runpath.path, 'lammps.rdf.I')) 
+    rdfsAg = parse_lammps_rdf(rdffile=rdfAgFile)
+    rdfsI = parse_lammps_rdf(rdffile=rdfIFile)
+
+    return output, rdfsAg, rdfsI
 
 
 def md_run():
-    output, rdfs = compute_AgI_dynamics(timestep=0.001, nsteps=1000, temperature=300, ncpu=1)
+    output, rdfsAg, rdfsI = compute_AgI_dynamics(timestep=0.001, nsteps=1000, temperature=300, ncpu=1)
     [simtime, temp, etotal, press, dens, msdAg, msdI] = output
     ## ------- plot output properties
     #plt.plot(simtime, temp)
@@ -90,7 +97,7 @@ def md_run():
     plt.show()
 
     # ----- plot radial distribution functions
-    for rdf in rdfs:
+    for rdf in rdfsAg:
         plt.plot(rdf[0], rdf[1])
     plt.show()
 

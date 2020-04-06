@@ -45,6 +45,7 @@ intemplate = """
     fix 4 all npt temp $TEMPERATURE $TEMPERATURE $TDAMP tri 0.0 0.0 1.0
 
     # --------- Run -------------
+    timestep $TIMESTEP
     run $NSTEPS
     unfix 4
 """

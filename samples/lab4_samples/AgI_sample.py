@@ -27,9 +27,11 @@ intemplate = """
     compute msdI iodines msd com yes
     compute rdfAg all rdf 1000 1 1
     compute rdfI all rdf 1000 2 2
+    compute rdfAgI all rdf 1000 1 2
 
     variable rdfAgFile string "$RDFFILE.Ag"
     variable rdfIFile string "$RDFFILE.I"
+    variable rdfAgIFile string "$RDFFILE.AgI"
 
     thermo_style custom step temp etotal press density c_msdAg[4] c_msdI[4]
     thermo $TOUTPUT 
@@ -37,6 +39,7 @@ intemplate = """
     # record rdf
     fix 1 all ave/time 1 $RDFFRAME $RDFFRAME c_rdfAg[*] file ${rdfAgFile} mode vector
     fix 2 all ave/time 1 $RDFFRAME $RDFFRAME c_rdfI[*] file ${rdfIFile} mode vector
+    fix 3 all ave/time 1 $RDFFRAME $RDFFRAME c_rdfAgI[*] file ${rdfAgIFile} mode vector
 
     # ---------- Specify ensemble  ---------------------
     fix 4 all npt temp $TEMPERATURE $TEMPERATURE $TDAMP tri 0.0 0.0 1.0
@@ -79,16 +82,20 @@ def compute_AgI_dynamics(timestep, nsteps, temperature, ncpu):
     outfile = lammps_run(struc=struc, runpath=runpath, potential=potential,
                                   intemplate=intemplate, inparam=inparam, ncpu=ncpu)
     output = parse_lammps_thermo(outfile=outfile)
+
     rdfAgFile = File(path=os.path.join(runpath.path, 'lammps.rdf.Ag')) 
     rdfIFile = File(path=os.path.join(runpath.path, 'lammps.rdf.I')) 
+    rdfAgIFile = File(path=os.path.join(runpath.path, 'lammps.rdf.AgI')) 
+
     rdfsAg = parse_lammps_rdf(rdffile=rdfAgFile)
     rdfsI = parse_lammps_rdf(rdffile=rdfIFile)
+    rdfsAgI = parse_lammps_rdf(rdffile=rdfAgIFile)
 
-    return output, rdfsAg, rdfsI
+    return output, rdfsAg, rdfsI, rdfsAgI
 
 
 def md_run():
-    output, rdfsAg, rdfsI = compute_AgI_dynamics(timestep=0.001, nsteps=1000, temperature=300, ncpu=1)
+    output, rdfsAg, rdfsI, rdfsAgI = compute_AgI_dynamics(timestep=0.001, nsteps=1000, temperature=300, ncpu=1)
     [simtime, temp, etotal, press, dens, msdAg, msdI] = output
     ## ------- plot output properties
     #plt.plot(simtime, temp)

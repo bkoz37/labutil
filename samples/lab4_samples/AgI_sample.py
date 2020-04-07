@@ -86,7 +86,7 @@ def compute_AgI_dynamics(size, timestep, nsteps, temperature, ncpu):
         'RDFFRAME': int(nsteps / 4),   # frames for radial distribution function
     }
     outfile = lammps_run(struc=struc, runpath=runpath, potential=potential,
-                                  intemplate=intemplate, inparam=inparam, ncpu=ncpu)
+                                  intemplate=intemplate, inparam=inparam, ncpu=ncpu, triclinic=True)
     output = parse_lammps_thermo(outfile=outfile)
 
     rdfAgFile = File(path=os.path.join(runpath.path, 'lammps.rdf.Ag')) 

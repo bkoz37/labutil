@@ -5,7 +5,7 @@ from labutil.util import write_file, prepare_dir, run_command
 from ase.io.lammpsrun import read_lammps_dump
 
 
-def write_lammps_data(struc, runpath):
+def write_lammps_data(struc, runpath, triclinic=False):
     """Make LAMMPS struc data"""
     datatxt = 'Header of the LAMMPS data file \n\n'
     datatxt += '{} atoms \n'.format(struc.n_atoms)
@@ -14,6 +14,9 @@ def write_lammps_data(struc, runpath):
     datatxt += '0.0 {}  xlo xhi\n'.format(struc.cell[0][0])
     datatxt += '0.0 {}  ylo yhi\n'.format(struc.cell[1][1])
     datatxt += '0.0 {}  zlo zhi\n'.format(struc.cell[2][2])
+
+    if triclinic:
+        datatxt += '{} {} {} xy xz yz\n'.format(struc.cell[0][1], struc.cell[0][2], struc.cell[1][2])
 
     datatxt += '\nMasses \n\n'
     for sym, sp in struc.species.items():
@@ -43,14 +46,14 @@ def write_lammps_input(datafile, runpath, rdffile, intemplate, inparam, potentia
     return infile
 
 
-def lammps_run(struc, runpath, intemplate, potential, inparam, ncpu=1):
+def lammps_run(struc, runpath, intemplate, potential, inparam, ncpu=1, triclinic=False):
     lammps_code = ExternalCode(path=os.environ['LAMMPS_COMMAND'])
     prepare_dir(runpath.path)
     logfile = File(path=os.path.join(runpath.path, 'lammps.log'))
     outfile = File(path=os.path.join(runpath.path, 'lammps.out'))
     rdffile = File(path=os.path.join(runpath.path, 'lammps.rdf'))
 
-    datafile = write_lammps_data(struc=struc, runpath=runpath)
+    datafile = write_lammps_data(struc=struc, runpath=runpath, triclinic=triclinic)
     infile = write_lammps_input(datafile=datafile, potential=potential, runpath=runpath, rdffile=rdffile,
                                 intemplate=intemplate, inparam=inparam)
 

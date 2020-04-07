@@ -12,7 +12,7 @@ intemplate = """
     dimension  3
     boundary   p p p
     newton off
-    read_data /home/bond/Work/Lab4/AgI.data 
+    read_data $DATAINPUT 
 
     pair_style mff
     pair_coeff * * /home/bond/Work/Lab4/AgI_FF.txt 47 53 yes yes
@@ -56,14 +56,18 @@ def make_struc(size):
     :param size: supercell multiplier
     :return: structure object converted from ase
     """
-    alat = 4.10
-    unitcell = crystal('Al', [(0, 0, 0)], spacegroup=225, cellpar=[alat, alat, alat, 90, 90, 90])
+    alat = 5.1
+    lattice = alat * numpy.identity(3)
+    symbols = ['Ag', 'I', 'Ag', 'I']
+    sc_positions = np.array([[1/2, 0, 1/4], [0, 0, 0], [1, 1/2, 3/4], [1/2, 1/2, 1/2]])   
+    unitcell = Atoms(symbols=symbols, scaled_positions=sc_positions, cell=lattice)
     multiplier = numpy.identity(3) * size
     supercell = make_supercell(unitcell, multiplier)
     structure = Struc(ase2struc(supercell))
     return structure
 
-def compute_AgI_dynamics(timestep, nsteps, temperature, ncpu):
+
+def compute_AgI_dynamics(size, timestep, nsteps, temperature, ncpu):
     """
     Make an input template and select potential and structure, and input parameters.
     Return a pair of output file and RDF file written to the runpath directory.
@@ -71,7 +75,7 @@ def compute_AgI_dynamics(timestep, nsteps, temperature, ncpu):
 
     potential = ClassicalPotential(ptype='eam', element='Al', name='Al_zhou.eam.alloy')
     runpath = Dir(path=os.path.join(os.environ['WORKDIR'], "Lab4/Problem2", "temp_" + str(temperature)))
-    struc = make_struc(size=1)
+    struc = make_struc(size=size)
     inparam = {
         'TEMPERATURE': temperature,
         'NSTEPS': nsteps,
@@ -96,16 +100,14 @@ def compute_AgI_dynamics(timestep, nsteps, temperature, ncpu):
 
 
 def md_run():
-    output, rdfsAg, rdfsI, rdfsAgI = compute_AgI_dynamics(timestep=0.001, nsteps=1000, temperature=300, ncpu=1)
+    output, rdfsAg, rdfsI, rdfsAgI = compute_AgI_dynamics(size=1, timestep=0.001, nsteps=1000, temperature=300, ncpu=1)
     [simtime, temp, etotal, press, dens, msdAg, msdI] = output
     ## ------- plot output properties
-    #plt.plot(simtime, temp)
-    #plt.show()
-    plt.plot(simtime, press)
+    plt.plot(simtime, temp)
     plt.show()
 
     # ----- plot radial distribution functions
-    for rdf in rdfsAg:
+    for rdf in rdfsAgI:
         plt.plot(rdf[0], rdf[1])
     plt.show()
 

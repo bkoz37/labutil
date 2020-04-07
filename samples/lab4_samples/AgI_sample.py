@@ -4,6 +4,7 @@ from labutil.plugins.lammps import lammps_run, parse_lammps_rdf, parse_lammps_th
 from labutil.objects import File, Struc, Dir, ase2struc, ClassicalPotential
 from ase.spacegroup import crystal
 from ase.build import make_supercell
+from ase import Atoms
 
 intemplate = """
     # ---------- Initialize simulation ---------------------
@@ -59,7 +60,7 @@ def make_struc(size):
     alat = 5.1
     lattice = alat * numpy.identity(3)
     symbols = ['Ag', 'I', 'Ag', 'I']
-    sc_positions = np.array([[1/2, 0, 1/4], [0, 0, 0], [1, 1/2, 3/4], [1/2, 1/2, 1/2]])   
+    sc_positions = [[1/2, 0, 1/4], [0, 0, 0], [1, 1/2, 3/4], [1/2, 1/2, 1/2]]   
     unitcell = Atoms(symbols=symbols, scaled_positions=sc_positions, cell=lattice)
     multiplier = numpy.identity(3) * size
     supercell = make_supercell(unitcell, multiplier)

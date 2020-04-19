@@ -1,4 +1,4 @@
-from labutil.src.plugins.ising import *
+from labutil.plugins.ising import *
 import matplotlib.pyplot as plt
 
 # Variable initialization

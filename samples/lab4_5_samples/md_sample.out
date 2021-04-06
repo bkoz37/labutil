@@ -1,0 +1,58 @@
+LAMMPS (17 Nov 2016)
+Reading data file ...
+  orthogonal box = (0 0 0) to (12.3 12.3 12.3)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  108 atoms
+Reading potential file /home/bond/Software/lammps-17Nov16/potentials/Al_zhou.eam.alloy with DATE: 2007-10-12
+Neighbor list info ...
+  2 neighbor list requests
+  update every 1 steps, delay 10 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 12.1025
+  ghost atom cutoff = 12.1025
+  binsize = 6.05125, bins = 3 3 3
+Setting up Verlet run ...
+  Unit style    : metal
+  Current step  : 0
+  Time step     : 0.001
+Memory usage per processor = 3.08986 Mbytes
+Step PotEng KinEng TotEng Temp Press Density c_msdall[4] 
+       0   -386.54085    4.1492507    -382.3916          300   -10208.856    2.6003489            0 
+     100   -383.60281    2.3835455   -381.21927    172.33561    32.539194    2.6003489  0.026207894 
+     200   -383.03505    4.3155292   -378.71952    312.02231    3470.0272    2.6003489  0.030075768 
+     300   -381.56592    4.2291822   -377.33674    305.77923     8534.209    2.6003489   0.05410631 
+     400   -382.03117     4.847993   -377.18318    350.52062    7288.0481    2.6003489  0.036263732 
+     500   -382.90934    4.4953165   -378.41402    325.02133    4307.6747    2.6003489  0.034878212 
+     600   -382.89504    4.9593597   -377.93568    358.57268     4189.578    2.6003489  0.030485591 
+     700   -382.58475    4.7685238   -377.81622    344.77482    5143.2868    2.6003489   0.04006804 
+     800   -382.15872    4.6034279   -377.55529    332.83802    6733.9734    2.6003489   0.03893783 
+     900   -382.56418    4.1684173   -378.39577    301.38579     5377.582    2.6003489  0.038789299 
+    1000   -382.56604    4.3024333   -378.26361    311.07544    5457.4897    2.6003489  0.033960483 
+Loop time of 2.99656 on 1 procs for 1000 steps with 108 atoms
+
+Performance: 28.833 ns/day, 0.832 hours/ns, 333.716 timesteps/s
+99.2% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 2.2659     | 2.2659     | 2.2659     |   0.0 | 75.62
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.029411   | 0.029411   | 0.029411   |   0.0 |  0.98
+Output  | 0.0016723  | 0.0016723  | 0.0016723  |   0.0 |  0.06
+Modify  | 0.69471    | 0.69471    | 0.69471    |   0.0 | 23.18
+Other   |            | 0.004913   |            |       |  0.16
+
+Nlocal:    108 ave 108 max 108 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:    2348 ave 2348 max 2348 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:    23112 ave 23112 max 23112 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 23112
+Ave neighs/atom = 214
+Neighbor list builds = 0
+Dangerous builds = 0
+Total wall time: 0:00:03

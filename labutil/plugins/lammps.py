@@ -75,7 +75,7 @@ def get_lammps_energy(outfile):
         for line in fout.readlines():
             if 'Total energy' in line:
                 energy = float(line.split(" = ")[1])
-            if 'Lattice constant (Angstoms)' in line:
+            if 'Lattice constant (Angstroms)' in line:
                 lattice = float(line.split(" = ")[1])
     return energy, lattice
 
